@@ -14,6 +14,13 @@ from langchain_core.messages import BaseMessage
 from langgraph.graph import add_messages
 
 
+
+thread_id = '1'
+config = {
+    'configurable' : {'thread_id': thread_id}
+}
+
+
 class ChatState(TypedDict):
 
     messages : Annotated[list[BaseMessage], add_messages]
@@ -42,31 +49,16 @@ graph.add_node('chat_node', chat_node)
 graph.add_edge(START, 'chat_node')
 graph.add_edge('chat_node', END)
 
-workflow = graph.compile(checkpointer=checkpointer)
+chatbot = graph.compile(checkpointer=checkpointer)
 
 
-thread_id = '1'
-config = {
-    'configurable' : {'thread_id': thread_id}
-}
 
 
-def chat(user_message: str) -> str:
-    """Send one message to the graph and return the AI reply."""
-    response = workflow.invoke(
-        {'messages': [HumanMessage(content=user_message)]},
-        config=config,
-    )
-    return response['messages'][-1].content
 
+# while True:
+#     user_message = input('Type here: ')
 
-if __name__ == '__main__':
-    # terminal demo only: importing this module (e.g. from Streamlit) must not
-    # run the graph or block on input()
-    while True:
-        user_message = input('Type here: ')
+#     if user_message.strip().lower() in ['exit', 'quit', 'bye']:
+#         break
 
-        if user_message.strip().lower() in ['exit', 'quit', 'bye']:
-            break
-
-        print('AI: ', chat(user_message))
+    
