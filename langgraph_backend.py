@@ -51,14 +51,3 @@ graph.add_edge('chat_node', END)
 
 chatbot = graph.compile(checkpointer=checkpointer)
 
-
-
-
-
-# while True:
-#     user_message = input('Type here: ')
-
-#     if user_message.strip().lower() in ['exit', 'quit', 'bye']:
-#         break
-
-    
